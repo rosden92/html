@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Курс криптовалют</title>
+  <style>
+    body {
+      background-color: gray;
+      text-align: center;
+    }
+    
+    h2 {
+      color: yellow;
+    }
+    
+    p {
+      color: green;
+    }
+  </style>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    $(document).ready(function() {
+      
+      // Отримання курсу криптовалют
+      function getCurrencyRates() {
+        var bitcoinUrl = "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,uah";
+        var ethereumUrl = "https://api.coingecko.com/api/v3/simple/price?ids=ethereum&vs_currencies=usd,uah";
+        var arbitrumUrl = "https://api.coingecko.com/api/v3/simple/price?ids=arbitrum&vs_currencies=usd";
+        var bnbUrl = "https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd";
+        var litecoinUrl = "https://api.coingecko.com/api/v3/simple/price?ids=litecoin&vs_currencies=usd";
+        var dogecoinUrl = "https://api.coingecko.com/api/v3/simple/price?ids=dogecoin&vs_currencies=usd";
+        var usdUahUrl = "https://api.exchangerate-api.com/v4/latest/USD";
+
+        $.ajax({
+          url: bitcoinUrl,
+          dataType: "json",
+          success: function(data) {
+            var bitcoinRateUsd = data.bitcoin.usd;
+            var bitcoinRateUah = data.bitcoin.uah;
+
+            $("#bitcoin-rate-usd").text(bitcoinRateUsd);
+            $("#bitcoin-rate-uah").text(bitcoinRateUah);
+          },
+          error: function() {
+            $("#bitcoin-rate-usd").text("Помилка при отриманні курсу Bitcoin");
+            $("#bitcoin-rate-uah").text("Помилка при отриманні курсу Bitcoin");
+          }
+        });
+
+        $.ajax({
+          url: ethereumUrl,
+          dataType: "json",
+          success: function(data) {
+            var ethereumRateUsd = data.ethereum.usd;
+            var ethereumRateUah = data.ethereum.uah;
+
+            $("#ethereum-rate-usd").text(ethereumRateUsd);
+            $("#ethereum-rate-uah").text(ethereumRateUah);
+          },
+          error: function() {
+            $("#ethereum-rate-usd").text("Помилка при отриманні курсу Ethereum");
+            $("#ethereum-rate-uah").text("Помилка при отриманні курсу Ethereum");
+          }
+        });
+        
+        $.ajax({
+          url: arbitrumUrl,
+          dataType: "json",
+          success: function(data) {
+            var arbitrumRate = data.arbitrum.usd;
+
+            $("#arbitrum-rate").text(arbitrumRate);
+          },
+          error: function() {
+            $("#arbitrum-rate").text("Помилка при отриманні курсу Arbitrum");
+          }
+        });
+        
+        $.ajax({
+          url: bnbUrl,
+          dataType: "json",
+          success: function(data) {
+            var bnbRate = data.binancecoin.usd;
+
+            $("#bnb-rate").text(bnbRate);
+          },
+          error: function() {
+            $("#bnb-rate").text("Помилка при отриманні курсу Binance Coin");
+          }
+        });
+        
+        $.ajax({
+          url: litecoinUrl,
+          dataType: "json",
+          success: function(data) {
+            var litecoinRate = data.litecoin.usd;
+
+            $("#litecoin-rate").text(litecoinRate);
+          },
+          error: function() {
+            $("#litecoin-rate").text("Помилка при отриманні курсу Litecoin");
+          }
+        });
+
+        $.ajax({
+          url: dogecoinUrl,
+          dataType: "json",
+          success: function(data) {
+            var dogecoinRate = data.dogecoin.usd;
+
+            $("#dogecoin-rate").text(dogecoinRate);
+          },
+          error: function() {
+            $("#dogecoin-rate").text("Помилка при отриманні курсу Dogecoin");
+          }
+        });
+        
+        $.ajax({
+          url: usdUahUrl,
+          dataType: "json",
+          success: function(data) {
+            var usdUahRate = data.rates.UAH;
+
+            $("#usd-uah-rate").text(usdUahRate);
+          },
+          error: function() {
+            $("#usd-uah-rate").text("Помилка при отриманні курсу USD/UAH");
+          }
+        });
+      }
+
+      // Оновлення даних кожні 5 хвилин
+      setInterval(function() {
+        getCurrencyRates();
+      }, 300000); // 300 000 мілісекунд = 5 хвилин
+
+      // Перший запуск отримання даних
+      getCurrencyRates();
+    });
+  </script>
+</head>
+<body>
+  <h2>Курс криптовалют:</h2>
+  <div>
+    <h3>Bitcoin:</h3>
+    <p>Курс BTC/USD: <span id="bitcoin-rate-usd"></span></p>
+    <p>Курс BTC/UAH: <span id="bitcoin-rate-uah"></span></p>
+  </div>
+  <div>
+    <h3>Ethereum:</h3>
+    <p>Курс ETH/USD: <span id="ethereum-rate-usd"></span></p>
+    <p>Курс ETH/UAH: <span id="ethereum-rate-uah"></span></p>
+  </div>
+  <div>
+    <h3>Arbitrum:</h3>
+    <p>Курс ARB/USD: <span id="arbitrum-rate"></span></p>
+  </div>
+  <div>
+    <h3>Binance Coin:</h3>
+    <p>Курс BNB/USD: <span id="bnb-rate"></span></p>
+  </div>
+  <div>
+    <h3>Litecoin:</h3>
+    <p>Курс LTC/USD: <span id="litecoin-rate"></span></p>
+  </div>
+  <div>
+    <h3>Dogecoin:</h3>
+    <p>Курс DOGE/USD: <span id="dogecoin-rate"></span></p>
+  </div>
+  <div>
+    <h3>USD/UAH:</h3>
+    <p>Курс USD/UAH: <span id="usd-uah-rate"></span></p>
+  </div>
+</body>
+</html>
